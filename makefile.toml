@@ -28,25 +28,6 @@ args = [
 ]
 dependencies = ["wasm_clean", "build"]
 
-[tasks.dev]
-command = "cargo"
-args = [
-    "watch",
-    "-w",
-    "../..",
-    "-i",
-    ".git*",
-    "-i",
-    "target/*",
-    "-i",
-    ".vscode/*",
-    "-i",
-    "./web/*",
-    "-s",
-    "cargo build --release --target wasm32-unknown-unknown --target-dir target && wasm-bindgen --out-name rrr --out-dir ${workspaceFolder}/web/bin --target web target/wasm32-unknown-unknown/release/rrr_head_wasm.wasm",
-]
-
-
 [tasks.serve]
 command = "miniserve"
 args = ["web", "--port", "17645", "--index", "index.html"]
