@@ -19,10 +19,10 @@ args = ["build", "--release", "--target", "wasm32-unknown-unknown"]
 command = "wasm-bindgen"
 args = [
     "--out-dir",
-    "web\\bin",
+    "web/bin",
     "--target",
     "web",
-    "target\\wasm32-unknown-unknown\\release\\${CARGO_MAKE_CRATE_NAME}.wasm",
+    "target/wasm32-unknown-unknown/release/${CARGO_MAKE_CRATE_NAME}.wasm",
 ]
 dependencies = ["wasm_clean", "crate"]
 
