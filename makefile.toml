@@ -1,0 +1,53 @@
+[tasks.wasm_clean]
+script_runner = "@shell"
+script = '''
+rm -f web/bin
+'''
+
+[tasks.build]
+command = "cargo"
+args = [
+    "build",
+    "--release",
+    "--target",
+    "wasm32-unknown-unknown",
+    "--target-dir",
+    "target",
+]
+
+[tasks.wasm]
+command = "wasm-bindgen"
+args = [
+    "--out-name",
+    "${CARGO_MAKE_CRATE_NAME}",
+    "--out-dir",
+    "web/bin",
+    "--target",
+    "web",
+    "target/wasm32-unknown-unknown/release/${CARGO_MAKE_CRATE_NAME}.wasm",
+]
+dependencies = ["wasm_clean", "build"]
+
+[tasks.dev]
+command = "cargo"
+args = [
+    "watch",
+    "-w",
+    "../..",
+    "-i",
+    ".git*",
+    "-i",
+    "target/*",
+    "-i",
+    ".vscode/*",
+    "-i",
+    "./web/*",
+    "-s",
+    "cargo build --release --target wasm32-unknown-unknown --target-dir target && wasm-bindgen --out-name rrr --out-dir ${workspaceFolder}/web/bin --target web target/wasm32-unknown-unknown/release/rrr_head_wasm.wasm",
+]
+
+
+[tasks.serve]
+command = "miniserve"
+args = ["web", "--port", "17645", "--index", "index.html"]
+dependencies = ["wasm"]
