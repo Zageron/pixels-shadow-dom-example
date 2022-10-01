@@ -20,6 +20,7 @@ jobs:
           lfs: true
       
       - name: Setup Pages
+        if: ${{ !env.ACT }}
         id: pages
         uses: actions/configure-pages@v2
       
@@ -29,29 +30,26 @@ jobs:
           profile: minimal
           toolchain: stable
           target: wasm32-unknown-unknown
-      
-      - name: Install cargo-make
-        uses: actions-rs/cargo@v1
-        with:
-          command: install
-          args: --debug cargo-make
 
+      - uses: davidB/rust-cargo-make@v1
+        with:
+          version: '0.36.1'
+      
       - name: ⚡ Cache
-        uses: Swatinem/rust-cache@v2.0.0
         if: ${{ !env.ACT }}
+        uses: Swatinem/rust-cache@v2.0.0
 
       - name: Build
-        uses: actions-rs/cargo@v1
-        with:
-          command: make
-          args: wasm
+        run: cargo make --disable-check-for-updates --makefile makefile.toml 
 
       - name: Upload Artifact
+        if: ${{ !env.ACT }}
         uses: actions/upload-pages-artifact@v1
         with:
           path: ./web
   
   deploy-pages:
+    if: ${{ !env.ACT }}
     needs: build
 
     permissions:
