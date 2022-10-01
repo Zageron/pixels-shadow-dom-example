@@ -1,14 +1,11 @@
 #![deny(clippy::all)]
 #![forbid(unsafe_code)]
 
-use log::error;
 use pixels::{Pixels, SurfaceTexture};
 use std::rc::Rc;
 use winit::dpi::LogicalSize;
-use winit::event::{Event, VirtualKeyCode};
-use winit::event_loop::{ControlFlow, EventLoop};
+use winit::event_loop::EventLoop;
 use winit::window::WindowBuilder;
-use winit_input_helper::WinitInputHelper;
 
 #[cfg(target_arch = "wasm32")]
 use web_sys::HtmlCanvasElement;
@@ -47,8 +44,7 @@ async fn run(canvas: Option<HtmlCanvasElement>) {
 
     let window = Rc::new(window);
 
-    let mut input = WinitInputHelper::new();
-    let mut pixels = {
+    let _pixels = {
         let window_size = window.inner_size();
 
         let surface_texture =
