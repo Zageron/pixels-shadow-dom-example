@@ -2,8 +2,12 @@
 script_runner = "@shell"
 script = '''
 rm -rf web/bin ||:
-mkdir web/bin
 '''
+
+[tasks.clean]
+command = "cargo"
+args = ["clean"]
+dependencies = ["wasm_clean"]
 
 [tasks.format]
 disabled = true
